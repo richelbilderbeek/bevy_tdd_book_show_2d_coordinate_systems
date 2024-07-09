@@ -50,6 +50,10 @@ fn add_text(mut commands: Commands) {
     commands.spawn((
         Text2dBundle {
             text: Text::from_section(String::new(), TextStyle { ..default() }),
+            transform: Transform {
+                translation: Vec3::new(-100.0, 100.0, 0.0),
+                ..default()
+            },
             ..default()
         },
         CursorText,
@@ -132,14 +136,15 @@ fn is_player_visible(app: &mut App) -> bool {
 }
 
 fn respond_to_mouse_move(
-    mut text_query: Query<(&mut Text, &CursorText)>,
+    mut text_query: Query<&mut Text, With<CursorText>>,
     mut mouse_motion_event: EventReader<bevy::input::mouse::MouseMotion>,
-    player_query: Query<(&Transform, &Player)>,
+    player_query: Query<&Transform, With<Player>>,
     window_query: Query<&Window>,
-    camera_query: Query<(&Camera, &OrthographicProjection)>,
+    camera_query: Query<(&Camera, &OrthographicProjection, &GlobalTransform)>,
 ) {
     for _event in mouse_motion_event.read() {
-        let (_camera, projection) = camera_query.single();
+        let (camera, projection, camera_transform) = camera_query.single();
+        let mut text = text_query.single_mut();
         let maybe_cursor_pos = window_query.single().cursor_position();
         let line_cursor_pos: String = if maybe_cursor_pos.is_some() {
             format!(
@@ -150,8 +155,19 @@ fn respond_to_mouse_move(
         } else {
             "cursor_pos: outside window".to_string()
         };
+        // cursor_por in world
+        let line_cursor_world_pos: String = if maybe_cursor_pos.is_some() {
+            let cursor_world_pos = camera
+                .viewport_to_world_2d(camera_transform, maybe_cursor_pos.unwrap())
+                .unwrap();
+            //text_transform.translation = Vec2::extend(cursor_world_pos, 0.0);
+            format!("cursor_world_pos: {}", coordinat_to_str(cursor_world_pos)).to_string()
+        } else {
+            "cursor_world_pos: outside window".to_string()
+        };
+
         // player
-        let player_pos = player_query.single().0.translation.xy();
+        let player_pos = player_query.single().translation.xy();
         let line_player_pos: String = format!("player_pos: {}, {}", player_pos.x, player_pos.y);
 
         // is_in
@@ -159,21 +175,21 @@ fn respond_to_mouse_move(
             "is_player_visible: {}",
             is_position_visible_in_projection_area(player_pos, projection)
         );
-        let (mut text, _) = text_query.single_mut();
-        text.sections[0].value =
-            format!("{}\n{}\n{}", line_cursor_pos, line_player_pos, line_is_in);
+        text.sections[0].value = format!(
+            "{}\n{}\n{}\n{}",
+            line_cursor_pos, line_cursor_world_pos, line_player_pos, line_is_in
+        );
     }
 }
 
 fn respond_to_resize(
     mut resize_reader: EventReader<bevy::window::WindowResized>,
-    mut text_query: Query<(&mut Text, &mut Transform, &ResizeText)>,
-    window_query: Query<&Window>,
+    mut text_query: Query<(&mut Text, &mut Transform), With<ResizeText>>,
     camera_query: Query<(&Camera, &OrthographicProjection)>,
 ) {
-    let (mut text, mut transform, _) = text_query.single_mut();
+    let (mut text, mut transform) = text_query.single_mut();
     for e in resize_reader.read() {
-        transform.translation = Vec3::new(e.width / 4.0, e.height / 4.0, 0.0);
+        transform.translation = Vec3::new(e.width / 4.0, -e.height / 4.0, 0.0);
         let line_event = format!("event: {:.1} x {:.1}", e.width, e.height);
 
         let (camera, projection) = camera_query.single();
