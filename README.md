@@ -8,7 +8,7 @@
 [![Measure code coverage](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/measure_codecov.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/measure_codecov.yaml)
 [![codecov](https://codecov.io/gh/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/graph/badge.svg?token=XAVFZYDQKZ)](https://codecov.io/gh/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems)
 
-'Hello world' code for [https://github.com/richelbilderbeek/bevy_tdd_book](https://github.com/richelbilderbeek/bevy_tdd_book)
+Chapter of [https://github.com/richelbilderbeek/bevy_tdd_book](https://github.com/richelbilderbeek/bevy_tdd_book)
 
 First, we follow the steps of the [Bevy setup](https://bevyengine.org/learn/quick-start/getting-started/setup/):
 
