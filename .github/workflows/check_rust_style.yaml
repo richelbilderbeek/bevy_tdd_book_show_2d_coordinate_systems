@@ -1,0 +1,34 @@
+# Check that the project follows a good Rust style
+name: Check Rust style
+
+# Check links on the 2nd day of the month.
+# 2nd as the first letter of this repo is the 2nd letter in the alphabet.
+on:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 0 2 * *"
+
+# Make sure CI fails on all warnings, including Clippy lints
+env:
+  RUSTFLAGS: "-Dwarnings"
+
+jobs:
+  check_rust_style:
+    runs-on: ubuntu-latest
+    steps:
+
+      - uses: actions/checkout@v4
+
+      #- uses: actions-rs/toolchain@v1
+      #  with:
+      #    toolchain: stable
+
+      - name: Install ALSA, adapted from https://stackoverflow.com/a/57728808
+        run: sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0
+
+      - name: Install udev, from https://stackoverflow.com/a/74529205
+        run: sudo apt-get install -y  libudev-dev
+
+      - name: Run Clippy
+        run: cargo clippy --all-targets --all-features

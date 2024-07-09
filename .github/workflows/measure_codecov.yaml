@@ -1,0 +1,44 @@
+# Measure the code coverage
+name: Measure code coverage
+
+# Check links on the 2nd day of the month.
+# 2nd as the first letter of this repo is the 2nd letter in the alphabet.
+on:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 0 2 * *"
+
+jobs:
+  measure_code_coverage:
+    runs-on: ubuntu-latest
+    env:
+      CARGO_TERM_COLOR: always
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Install Rust
+        run: rustup update stable
+
+      - name: Install cargo-llvm-cov
+        uses: taiki-e/install-action@cargo-llvm-cov
+
+      - name: Install ALSA, adapted from https://stackoverflow.com/a/57728808
+        run: sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0
+
+      - name: Install udev, from https://stackoverflow.com/a/74529205
+        run: sudo apt-get install -y  libudev-dev
+
+
+      - name: Generate code coverage
+        run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info
+
+      - name: Show code coverage
+        run: cat lcov.info
+
+      - name: Upload coverage to Codecov
+        uses: codecov/codecov-action@v3
+        with:
+          token: ${{ secrets.CODECOV_TOKEN }} # not required for public repos
+          files: lcov.info
+          fail_ci_if_error: true

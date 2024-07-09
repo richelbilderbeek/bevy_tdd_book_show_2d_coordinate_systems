@@ -1,0 +1,16 @@
+config
+github
+https
+json
+jsonc
+linter
+markdownlint
+markdownlintignore
+mlc
+richelbilderbeek
+tdd
+toml
+txt
+wordlist
+yml
+codecov

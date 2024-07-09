@@ -1,0 +1,27 @@
+# Check that there is correct spelling in all files
+name: Check spelling
+
+# Check links on the 2nd day of the month.
+# 2nd as the first letter of this repo is the 2nd letter in the alphabet.
+on:
+  push:
+  pull_request:
+  schedule:
+  - cron: "0 0 2 * *"
+
+
+jobs:
+  check_spelling:
+
+    runs-on: ubuntu-latest
+    env:
+      GITHUB_PAT: ${{ secrets.GITHUB_TOKEN }}
+    steps:
+
+      - name: Set up Git repository
+        uses: actions/checkout@v2
+
+      - uses: igsekor/pyspelling-any@v1.0.4
+
+
+
