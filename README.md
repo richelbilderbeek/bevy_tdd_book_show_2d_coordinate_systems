@@ -17,7 +17,6 @@ git clone https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_s
 cd bevy_tdd_book_show_2d_coordinate_systems
 cargo init
 cargo add bevy
-cargo add bevy -F dynamic_linking
 ```
 
 To [Cargo.toml](Cargo.toml) add:
@@ -40,26 +39,6 @@ linker = "clang"
 rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 ```
 
-Code:
-
-```rust
-use bevy::prelude::*;
-
-fn main() {
-    let mut app = App::new();
-    app.run();
-}
-
-#[cfg(test)]
-mod tests {
-    use super::*;
-
-    #[test]
-    fn test_testing() {
-        assert_eq!(1 + 1, 2)
-    }
-}
-```
 
 ## Files used by continuous integration scripts
 
