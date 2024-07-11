@@ -180,12 +180,10 @@ fn respond_to_keyboard(
 
 fn show_mouse_and_player_position(
     mut text_query: Query<(&mut Text, &CursorText)>,
-    //mut mouse_motion_event: EventReader<bevy::input::mouse::MouseMotion>,
     player_query: Query<(&Transform, &Player)>,
     window_query: Query<&Window>,
     camera_query: Query<(&Camera, &OrthographicProjection, &GlobalTransform)>,
 ) {
-    //for _event in mouse_motion_event.read() {
     let (camera, _, camera_transform) = camera_query.single();
     let mut text = text_query.single_mut().0;
     let maybe_cursor_pos = window_query.single().cursor_position();
@@ -198,17 +196,15 @@ fn show_mouse_and_player_position(
     } else {
         "cursor_pos: outside window".to_string()
     };
-    // cursor_por in world
+    // cursor_pos in world
     let line_cursor_world_pos: String = if maybe_cursor_pos.is_some() {
         let cursor_world_pos = camera
             .viewport_to_world_2d(camera_transform, maybe_cursor_pos.unwrap())
             .unwrap();
-        //text_transform.translation = Vec2::extend(cursor_world_pos, 0.0);
         format!("cursor_world_pos: {}", coordinat_to_str(cursor_world_pos)).to_string()
     } else {
         "cursor_world_pos: outside window".to_string()
     };
-
     // player
     let player_pos = player_query.single().0.translation.xy();
     let line_player_pos: String = format!("player_pos: {}, {}", player_pos.x, player_pos.y);
@@ -217,7 +213,6 @@ fn show_mouse_and_player_position(
         "{}\n{}\n{}",
         line_cursor_pos, line_cursor_world_pos, line_player_pos
     );
-    //}
 }
 
 fn show_is_in(
@@ -235,13 +230,10 @@ fn show_is_in(
 }
 
 fn show_sizes(
-    //mut resize_reader: EventReader<bevy::window::WindowResized>,
     mut text_query: Query<(&mut Text, &Transform, &ResizeText)>,
     camera_query: Query<(&Camera, &OrthographicProjection)>,
 ) {
     let (mut text, _, _) = text_query.single_mut();
-    //for e in resize_reader.read() {
-    //let line_event = format!("event: {:.1} x {:.1}", e.width, e.height);
     let (camera, projection) = camera_query.single();
 
     let maybe_logical_viewport_rect = camera.logical_viewport_rect();
@@ -273,7 +265,6 @@ fn show_sizes(
         line_physical_viewport_rect,
         line_projection_area,
     );
-    //}
 }
 
 #[cfg(test)]
