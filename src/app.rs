@@ -22,6 +22,7 @@ pub fn create_app() -> App {
     // The main app will assume it to be absent
     if cfg!(test) {
         app.add_plugins(bevy::input::InputPlugin);
+        app.add_plugins(bevy::prelude::WindowPlugin::default());
     }
 
     app.add_systems(Startup, (add_camera, add_player, add_text));
@@ -272,11 +273,6 @@ mod tests {
     use super::*;
 
     #[test]
-    fn test_testing() {
-        assert_eq!(1 + 1, 2)
-    }
-
-    #[test]
     fn test_can_create_app() {
         create_app();
     }
@@ -287,6 +283,7 @@ mod tests {
         assert_eq!(count_n_players(&mut app), 0);
     }
 
+    #[test]
     fn test_empty_app_has_no_camers() {
         let mut app = App::new();
         assert_eq!(count_n_camers(&mut app), 0);
@@ -310,7 +307,7 @@ mod tests {
     fn test_player_has_a_custom_scale() {
         let mut app = create_app();
         app.update();
-        assert_eq!(get_player_scale(&mut app), Vec2::new(1.0, 1.0));
+        assert_eq!(get_player_scale(&mut app), Vec2::new(64.0, 32.0));
     }
 
     #[test]
@@ -325,5 +322,25 @@ mod tests {
         let mut app = create_app();
         app.update();
         assert_eq!(get_camera_scale(&mut app), 1.0);
+    }
+
+    #[test]
+    fn test_player_is_visible_at_the_start() {
+        let mut app = create_app();
+        app.update();
+        assert!(is_player_visible(&mut app));
+    }
+
+    #[test]
+    fn test_origin_is_visible_at_the_start() {
+        let mut app = create_app();
+        app.update();
+        assert!(is_position_visible(&mut app, Vec2::new(0.0,0.0)));
+    }
+    #[test]
+    fn test_far_away_position_is_not_visible_at_the_start() {
+        let mut app = create_app();
+        app.update();
+        assert!(!is_position_visible(&mut app, Vec2::new(10000000.0,0.0)));
     }
 }
