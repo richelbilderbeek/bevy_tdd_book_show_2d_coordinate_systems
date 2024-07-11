@@ -175,6 +175,14 @@ fn maybe_cursor_pos_to_str(maybe_cursor_pos: Option<Vec2>) -> String {
     }
 }
 
+fn maybe_cursor_world_pos_to_str(maybe_cursor_world_pos: Option<Vec2>) -> String {
+    if maybe_cursor_world_pos.is_some() {
+        format!("cursor_world_pos: {}", coordinate_to_str(maybe_cursor_world_pos.unwrap()))
+    } else {
+        "cursor_world_pos: outside window".to_string()
+    }
+}
+
 fn maybe_logical_viewport_rect_to_str(maybe_logical_viewport_rect: Option<Rect>) -> String {
     if maybe_logical_viewport_rect.is_some() {
         format!(
@@ -228,14 +236,15 @@ fn show_mouse_and_player_position(
     let maybe_cursor_pos = window_query.single().cursor_position();
     let line_cursor_pos = maybe_cursor_pos_to_str(maybe_cursor_pos);
     // cursor_pos in world
-    let line_cursor_world_pos: String = if maybe_cursor_pos.is_some() {
-        let cursor_world_pos = camera
+    let maybe_cursor_world_pos = if maybe_cursor_pos.is_some() {
+        Some(camera
             .viewport_to_world_2d(camera_transform, maybe_cursor_pos.unwrap())
-            .unwrap();
-        format!("cursor_world_pos: {}", coordinate_to_str(cursor_world_pos)).to_string()
+            .unwrap())
     } else {
-        "cursor_world_pos: outside window".to_string()
+        None
     };
+    let line_cursor_world_pos = maybe_cursor_world_pos_to_str(maybe_cursor_world_pos);
+
     // player
     let player_pos = player_query.single().0.translation.xy();
     let line_player_pos: String = format!("player_pos: {}, {}", player_pos.x, player_pos.y);
@@ -367,6 +376,13 @@ mod tests {
         let none = None;
         let some = Some(Vec2::new(0.0, 0.0));
         assert_ne!(maybe_cursor_pos_to_str(none), maybe_cursor_pos_to_str(some));
+    }
+
+    #[test]
+    fn test_maybe_cursor_world_pos_to_str() {
+        let none = None;
+        let some = Some(Vec2::new(0.0, 0.0));
+        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str(some));
     }
 
     #[test]
