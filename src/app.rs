@@ -236,9 +236,9 @@ fn show_mouse_and_player_position(
     let maybe_cursor_pos = window_query.single().cursor_position();
     let line_cursor_pos = maybe_cursor_pos_to_str(maybe_cursor_pos);
     // cursor_pos in world
-    let maybe_cursor_world_pos = if maybe_cursor_pos.is_some() {
+    if let Some(cursor_pos) = maybe_cursor_pos {
         Some(camera
-            .viewport_to_world_2d(camera_transform, maybe_cursor_pos.unwrap())
+            .viewport_to_world_2d(camera_transform, cursor_pos)
             .unwrap())
     } else {
         None
@@ -278,11 +278,12 @@ fn show_sizes(
     let maybe_logical_viewport_rect = camera.logical_viewport_rect();
     let maybe_physical_viewport_rect = camera.physical_viewport_rect();
     let projection_area = projection.area;
+    let line_area = format!("projection_area: {}", rect_to_str(projection_area))
     text.sections[0].value = format!(
         "{}\n{}\n{}",
         maybe_logical_viewport_rect_to_str(maybe_logical_viewport_rect),
         maybe_physical_viewport_rect_to_str(maybe_physical_viewport_rect),
-        format!("projection_area: {}", rect_to_str(projection_area)),
+        line_area,
     );
 }
 
@@ -382,7 +383,7 @@ mod tests {
     fn test_maybe_cursor_world_pos_to_str() {
         let none = None;
         let some = Some(Vec2::new(0.0, 0.0));
-        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str code(some));
+        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str(some));
     }
 
     #[test]
