@@ -236,13 +236,9 @@ fn show_mouse_and_player_position(
     let maybe_cursor_pos = window_query.single().cursor_position();
     let line_cursor_pos = maybe_cursor_pos_to_str(maybe_cursor_pos);
     // cursor_pos in world
-    let maybe_cursor_world_pos = if let Some(cursor_pos) = maybe_cursor_pos {
-        Some(camera
+    let maybe_cursor_world_pos = maybe_cursor_pos.map(|cursor_pos| camera
             .viewport_to_world_2d(camera_transform, cursor_pos)
-            .unwrap())
-    } else {
-        None
-    };
+            .unwrap());
     let line_cursor_world_pos = maybe_cursor_world_pos_to_str(maybe_cursor_world_pos);
 
     // player
@@ -367,6 +363,7 @@ mod tests {
     fn test_coordinate_to_str() {
         assert_eq!(coordinate_to_str(Vec2::new(1.2, 3.4)), String::from("(1.2, 3.4)"))
     }
+
     #[test]
     fn test_ucoordinate_to_str() {
         assert_eq!(ucoordinate_to_str(UVec2::new(1, 2)), String::from("(1, 2)"))
