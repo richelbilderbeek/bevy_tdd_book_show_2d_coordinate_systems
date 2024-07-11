@@ -10,7 +10,11 @@
 
 Chapter of [https://github.com/richelbilderbeek/bevy_tdd_book](https://github.com/richelbilderbeek/bevy_tdd_book)
 
-First, we follow the steps of the [Bevy setup](https://bevyengine.org/learn/quick-start/getting-started/setup/):
+![Screenshot of this application](show_2d_coordinate_systems.png)
+
+## Setup
+
+Setup is done as described in [the Bevy 'getting started' guide](https://bevyengine.org/learn/quick-start/getting-started/setup/):
 
 ```bash
 git clone https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems
