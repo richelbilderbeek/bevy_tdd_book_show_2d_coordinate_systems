@@ -94,7 +94,11 @@ fn add_text(mut commands: Commands) {
     ));
 }
 
-fn coordinat_to_str(coordinat: Vec2) -> String {
+fn coordinate_to_str(coordinat: Vec2) -> String {
+    format!("({}, {})", coordinat[0], coordinat[1])
+}
+
+fn ucoordinate_to_str(coordinat: UVec2) -> String {
     format!("({}, {})", coordinat[0], coordinat[1])
 }
 
@@ -111,7 +115,11 @@ fn count_n_players(app: &mut App) -> usize {
 }
 
 fn rect_to_str(r: Rect) -> String {
-    format!("{}-{}", coordinat_to_str(r.min), coordinat_to_str(r.max))
+    format!("{}-{}", coordinate_to_str(r.min), coordinate_to_str(r.max))
+}
+
+fn urect_to_str(r: URect) -> String {
+    format!("{}-{}", ucoordinate_to_str(r.min), ucoordinate_to_str(r.max))
 }
 
 
@@ -156,6 +164,39 @@ fn is_player_visible(app: &mut App) -> bool {
     is_position_visible(app, position)
 }
 
+fn maybe_cursor_pos_to_str(maybe_cursor_pos: Option<Vec2>) -> String {
+    if maybe_cursor_pos.is_some() {
+        format!(
+            "cursor_pos: {}",
+            coordinate_to_str(maybe_cursor_pos.unwrap())
+        ).to_string()
+    } else {
+        "cursor_pos: outside window".to_string()
+    }
+}
+
+fn maybe_logical_viewport_rect_to_str(maybe_logical_viewport_rect: Option<Rect>) -> String {
+    if maybe_logical_viewport_rect.is_some() {
+        format!(
+            "logical_viewport_rect: {}",
+            rect_to_str(maybe_logical_viewport_rect.unwrap())
+        )
+    } else {
+        "No logical_viewport_rect".to_string()
+    }
+}
+
+fn maybe_physical_viewport_rect_to_str(maybe_physical_viewport_rect: Option<URect>) -> String {
+    if maybe_physical_viewport_rect.is_some() {
+        format!(
+            "physical_viewport_rect: {}",
+            urect_to_str(maybe_physical_viewport_rect.unwrap())
+        )
+    } else {
+        "No physical_viewport_rect".to_string()
+    }
+}
+
 fn respond_to_keyboard(
     mut query: Query<(&mut Transform, &Player)>,
     input: Res<ButtonInput<KeyCode>>,
@@ -185,21 +226,13 @@ fn show_mouse_and_player_position(
     let (camera, _, camera_transform) = camera_query.single();
     let mut text = text_query.single_mut().0;
     let maybe_cursor_pos = window_query.single().cursor_position();
-    let line_cursor_pos: String = if maybe_cursor_pos.is_some() {
-        format!(
-            "cursor_pos: {}",
-            coordinat_to_str(maybe_cursor_pos.unwrap())
-        )
-        .to_string()
-    } else {
-        "cursor_pos: outside window".to_string()
-    };
+    let line_cursor_pos = maybe_cursor_pos_to_str(maybe_cursor_pos);
     // cursor_pos in world
     let line_cursor_world_pos: String = if maybe_cursor_pos.is_some() {
         let cursor_world_pos = camera
             .viewport_to_world_2d(camera_transform, maybe_cursor_pos.unwrap())
             .unwrap();
-        format!("cursor_world_pos: {}", coordinat_to_str(cursor_world_pos)).to_string()
+        format!("cursor_world_pos: {}", coordinate_to_str(cursor_world_pos)).to_string()
     } else {
         "cursor_world_pos: outside window".to_string()
     };
@@ -233,35 +266,14 @@ fn show_sizes(
 ) {
     let (mut text, _, _) = text_query.single_mut();
     let (camera, projection) = camera_query.single();
-
     let maybe_logical_viewport_rect = camera.logical_viewport_rect();
-    let line_logical_viewport_rect: String = if maybe_logical_viewport_rect.is_some() {
-        format!(
-            "logical_viewport_rect: {}",
-            rect_to_str(maybe_logical_viewport_rect.unwrap())
-        )
-    } else {
-        "No logical_viewport_rect".to_string()
-    };
-    // physical denotes actual screen pixels
     let maybe_physical_viewport_rect = camera.physical_viewport_rect();
-    let line_physical_viewport_rect: String = if maybe_physical_viewport_rect.is_some() {
-        format!(
-            "physical_viewport_rect: {}",
-            urect_to_str(maybe_physical_viewport_rect.unwrap())
-        )
-    } else {
-        "No physical_viewport_rect".to_string()
-    };
-
-    // projection
     let projection_area = projection.area;
-    let line_projection_area = format!("projection_area: {}", rect_to_str(projection_area));
     text.sections[0].value = format!(
         "{}\n{}\n{}",
-        line_logical_viewport_rect,
-        line_physical_viewport_rect,
-        line_projection_area,
+        maybe_logical_viewport_rect_to_str(maybe_logical_viewport_rect),
+        maybe_physical_viewport_rect_to_str(maybe_physical_viewport_rect),
+        format!("projection_area: {}", rect_to_str(projection_area)),
     );
 }
 
@@ -342,9 +354,41 @@ mod tests {
     }
 
     #[test]
+    fn test_coordinate_to_str() {
+        assert_eq!(coordinate_to_str(Vec2::new(1.2, 3.4)), String::from("(1.2, 3.4)"))
+    }
+    #[test]
+    fn test_ucoordinate_to_str() {
+        assert_eq!(ucoordinate_to_str(UVec2::new(1, 2)), String::from("(1, 2)"))
+    }
+
+    #[test]
+    fn test_maybe_cursor_pos_to_str() {
+        let none = None;
+        let some = Some(Vec2::new(0.0, 0.0));
+        assert_ne!(maybe_cursor_pos_to_str(none), maybe_cursor_pos_to_str(some));
+    }
+
+    #[test]
+    fn test_maybe_logical_viewport_rect_to_str() {
+        let none = None;
+        let some = Some(Rect::new(1.1, 2.2, 3.3, 4.4) );
+        assert_ne!(maybe_logical_viewport_rect_to_str(none), maybe_logical_viewport_rect_to_str(some));
+    }
+
+    #[test]
+    fn test_maybe_physical_viewport_rect_to_str() {
+        let none = None;
+        let some = Some(URect::new(1, 2, 3, 4) );
+        assert_ne!(maybe_physical_viewport_rect_to_str(none), maybe_physical_viewport_rect_to_str(some));
+    }
+
+
+
+    #[test]
     fn test_player_responds_to_key_press_up() {
         let mut app = create_app();
-        assert!(app.is_plugin_added::<InputPlugin>());
+        assert!(app.is_plugin_added::<bevy::input::InputPlugin>());
         app.update();
 
         // Not moved yet
@@ -364,7 +408,7 @@ mod tests {
     #[test]
     fn test_player_responds_to_key_press_right() {
         let mut app = create_app();
-        assert!(app.is_plugin_added::<InputPlugin>());
+        assert!(app.is_plugin_added::<bevy::input::InputPlugin>());
         app.update();
 
         // Not moved yet
@@ -384,7 +428,7 @@ mod tests {
     #[test]
     fn test_player_responds_to_key_press_down() {
         let mut app = create_app();
-        assert!(app.is_plugin_added::<InputPlugin>());
+        assert!(app.is_plugin_added::<bevy::input::InputPlugin>());
         app.update();
 
         // Not moved yet
@@ -404,7 +448,7 @@ mod tests {
     #[test]
     fn test_player_responds_to_key_press_left() {
         let mut app = create_app();
-        assert!(app.is_plugin_added::<InputPlugin>());
+        assert!(app.is_plugin_added::<bevy::input::InputPlugin>());
         app.update();
 
         // Not moved yet
