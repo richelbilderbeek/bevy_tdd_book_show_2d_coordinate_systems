@@ -382,7 +382,7 @@ mod tests {
     fn test_maybe_cursor_world_pos_to_str() {
         let none = None;
         let some = Some(Vec2::new(0.0, 0.0));
-        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str(some));
+        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str code(some));
     }
 
     #[test]
