@@ -114,9 +114,6 @@ fn rect_to_str(r: Rect) -> String {
     format!("{}-{}", coordinat_to_str(r.min), coordinat_to_str(r.max))
 }
 
-fn urect_to_str(r: URect) -> String {
-    format!("({}, {})-({}, {})", r.min.x, r.min.y, r.max.x, r.max.y)
-}
 
 #[cfg(test)]
 fn get_camera_scale(app: &mut App) -> f32 {
@@ -342,5 +339,85 @@ mod tests {
         let mut app = create_app();
         app.update();
         assert!(!is_position_visible(&mut app, Vec2::new(10000000.0,0.0)));
+    }
+
+    #[test]
+    fn test_player_responds_to_key_press_up() {
+        let mut app = create_app();
+        assert!(app.is_plugin_added::<InputPlugin>());
+        app.update();
+
+        // Not moved yet
+        assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+
+        // Press the right arrow button, thanks Periwinkle
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::ArrowUp);
+
+        app.update();
+
+        // Position must have changed now
+        assert_ne!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+    }
+
+    #[test]
+    fn test_player_responds_to_key_press_right() {
+        let mut app = create_app();
+        assert!(app.is_plugin_added::<InputPlugin>());
+        app.update();
+
+        // Not moved yet
+        assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+
+        // Press the right arrow button, thanks Periwinkle
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::ArrowRight);
+
+        app.update();
+
+        // Position must have changed now
+        assert_ne!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+    }
+
+    #[test]
+    fn test_player_responds_to_key_press_down() {
+        let mut app = create_app();
+        assert!(app.is_plugin_added::<InputPlugin>());
+        app.update();
+
+        // Not moved yet
+        assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+
+        // Press the right arrow button, thanks Periwinkle
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::ArrowDown);
+
+        app.update();
+
+        // Position must have changed now
+        assert_ne!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+    }
+
+    #[test]
+    fn test_player_responds_to_key_press_left() {
+        let mut app = create_app();
+        assert!(app.is_plugin_added::<InputPlugin>());
+        app.update();
+
+        // Not moved yet
+        assert_eq!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
+
+        // Press the right arrow button, thanks Periwinkle
+        app.world_mut()
+            .resource_mut::<ButtonInput<KeyCode>>()
+            .press(KeyCode::ArrowLeft);
+
+        app.update();
+
+        // Position must have changed now
+        assert_ne!(get_player_position(&mut app), Vec2::new(0.0, 0.0));
     }
 }
