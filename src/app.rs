@@ -141,7 +141,7 @@ fn get_player_position(app: &mut App) -> Vec2 {
 fn get_player_size(app: &mut App) -> Vec2 {
     let mut query = app.world_mut().query::<(&Transform, &Player)>();
     let (transform, _) = query.single(app.world());
-    transform.size.xy()
+    transform.scale.xy()
 }
 
 fn is_position_visible_in_projection_area(
