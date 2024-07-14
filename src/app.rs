@@ -127,7 +127,7 @@ fn urect_to_str(r: URect) -> String {
 fn get_camera_scale(app: &mut App) -> f32 {
     let mut query = app.world_mut().query::<&OrthographicProjection>();
     let projection = query.single(app.world());
-    projection.size
+    projection.scale
 }
 
 #[cfg(test)]
