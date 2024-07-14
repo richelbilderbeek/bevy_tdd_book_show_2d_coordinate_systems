@@ -49,7 +49,7 @@ fn add_player(mut commands: Commands) {
     commands.spawn((
         SpriteBundle {
             transform: Transform {
-                scale: Vec3::new(64.0, 32.0, 1.0),
+                size: Vec3::new(64.0, 32.0, 1.0),
                 ..default()
             },
             ..default()
@@ -127,7 +127,7 @@ fn urect_to_str(r: URect) -> String {
 fn get_camera_scale(app: &mut App) -> f32 {
     let mut query = app.world_mut().query::<&OrthographicProjection>();
     let projection = query.single(app.world());
-    projection.scale
+    projection.size
 }
 
 #[cfg(test)]
@@ -141,7 +141,7 @@ fn get_player_position(app: &mut App) -> Vec2 {
 fn get_player_size(app: &mut App) -> Vec2 {
     let mut query = app.world_mut().query::<(&Transform, &Player)>();
     let (transform, _) = query.single(app.world());
-    transform.scale.xy()
+    transform.size.xy()
 }
 
 fn is_position_visible_in_projection_area(
@@ -319,7 +319,7 @@ mod tests {
     }
 
     #[test]
-    fn test_player_has_a_custom_scale() {
+    fn test_player_has_a_custom_size() {
         let mut app = create_app();
         app.update();
         assert_eq!(get_player_size(&mut app), Vec2::new(64.0, 32.0));
