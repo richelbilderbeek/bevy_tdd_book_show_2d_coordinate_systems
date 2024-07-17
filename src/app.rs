@@ -61,7 +61,13 @@ fn add_player(mut commands: Commands) {
 fn add_text(mut commands: Commands) {
     commands.spawn((
         Text2dBundle {
-            text: Text::from_section(String::new(), TextStyle { color: Color::srgb(1.0, 0.0, 0.0), ..default() }),
+            text: Text::from_section(
+                String::new(),
+                TextStyle {
+                    color: Color::srgb(1.0, 0.0, 0.0),
+                    ..default()
+                },
+            ),
             transform: Transform {
                 translation: Vec3::new(-100.0, 300.0, 0.0),
                 ..default()
@@ -72,7 +78,13 @@ fn add_text(mut commands: Commands) {
     ));
     commands.spawn((
         Text2dBundle {
-            text: Text::from_section(String::new(), TextStyle { color: Color::srgb(0.0, 1.0, 0.0), ..default() }),
+            text: Text::from_section(
+                String::new(),
+                TextStyle {
+                    color: Color::srgb(0.0, 1.0, 0.0),
+                    ..default()
+                },
+            ),
             transform: Transform {
                 translation: Vec3::new(-50.0, 100.0, 0.0),
                 ..default()
@@ -83,7 +95,13 @@ fn add_text(mut commands: Commands) {
     ));
     commands.spawn((
         Text2dBundle {
-            text: Text::from_section(String::new(), TextStyle { color: Color::srgb(0.0, 0.0, 1.0), ..default() }),
+            text: Text::from_section(
+                String::new(),
+                TextStyle {
+                    color: Color::srgb(0.0, 0.0, 1.0),
+                    ..default()
+                },
+            ),
             transform: Transform {
                 translation: Vec3::new(-0.0, -100.0, 0.0),
                 ..default()
@@ -119,9 +137,12 @@ fn rect_to_str(r: Rect) -> String {
 }
 
 fn urect_to_str(r: URect) -> String {
-    format!("{}-{}", ucoordinate_to_str(r.min), ucoordinate_to_str(r.max))
+    format!(
+        "{}-{}",
+        ucoordinate_to_str(r.min),
+        ucoordinate_to_str(r.max)
+    )
 }
-
 
 #[cfg(test)]
 fn get_camera_scale(app: &mut App) -> f32 {
@@ -169,7 +190,8 @@ fn maybe_cursor_pos_to_str(maybe_cursor_pos: Option<Vec2>) -> String {
         format!(
             "cursor_pos: {}",
             coordinate_to_str(maybe_cursor_pos.unwrap())
-        ).to_string()
+        )
+        .to_string()
     } else {
         "cursor_pos: outside window".to_string()
     }
@@ -177,7 +199,10 @@ fn maybe_cursor_pos_to_str(maybe_cursor_pos: Option<Vec2>) -> String {
 
 fn maybe_cursor_world_pos_to_str(maybe_cursor_world_pos: Option<Vec2>) -> String {
     if maybe_cursor_world_pos.is_some() {
-        format!("cursor_world_pos: {}", coordinate_to_str(maybe_cursor_world_pos.unwrap()))
+        format!(
+            "cursor_world_pos: {}",
+            coordinate_to_str(maybe_cursor_world_pos.unwrap())
+        )
     } else {
         "cursor_world_pos: outside window".to_string()
     }
@@ -236,9 +261,11 @@ fn show_mouse_and_player_position(
     let maybe_cursor_pos = window_query.single().cursor_position();
     let line_cursor_pos = maybe_cursor_pos_to_str(maybe_cursor_pos);
     // cursor_pos in world
-    let maybe_cursor_world_pos = maybe_cursor_pos.map(|cursor_pos| camera
+    let maybe_cursor_world_pos = maybe_cursor_pos.map(|cursor_pos| {
+        camera
             .viewport_to_world_2d(camera_transform, cursor_pos)
-            .unwrap());
+            .unwrap()
+    });
     let line_cursor_world_pos = maybe_cursor_world_pos_to_str(maybe_cursor_world_pos);
 
     // player
@@ -350,18 +377,21 @@ mod tests {
     fn test_origin_is_visible_at_the_start() {
         let mut app = create_app();
         app.update();
-        assert!(is_position_visible(&mut app, Vec2::new(0.0,0.0)));
+        assert!(is_position_visible(&mut app, Vec2::new(0.0, 0.0)));
     }
     #[test]
     fn test_far_away_position_is_not_visible_at_the_start() {
         let mut app = create_app();
         app.update();
-        assert!(!is_position_visible(&mut app, Vec2::new(10000000.0,0.0)));
+        assert!(!is_position_visible(&mut app, Vec2::new(10000000.0, 0.0)));
     }
 
     #[test]
     fn test_coordinate_to_str() {
-        assert_eq!(coordinate_to_str(Vec2::new(1.2, 3.4)), String::from("(1.2, 3.4)"))
+        assert_eq!(
+            coordinate_to_str(Vec2::new(1.2, 3.4)),
+            String::from("(1.2, 3.4)")
+        )
     }
 
     #[test]
@@ -380,24 +410,31 @@ mod tests {
     fn test_maybe_cursor_world_pos_to_str() {
         let none = None;
         let some = Some(Vec2::new(0.0, 0.0));
-        assert_ne!(maybe_cursor_world_pos_to_str(none), maybe_cursor_world_pos_to_str(some));
+        assert_ne!(
+            maybe_cursor_world_pos_to_str(none),
+            maybe_cursor_world_pos_to_str(some)
+        );
     }
 
     #[test]
     fn test_maybe_logical_viewport_rect_to_str() {
         let none = None;
-        let some = Some(Rect::new(1.1, 2.2, 3.3, 4.4) );
-        assert_ne!(maybe_logical_viewport_rect_to_str(none), maybe_logical_viewport_rect_to_str(some));
+        let some = Some(Rect::new(1.1, 2.2, 3.3, 4.4));
+        assert_ne!(
+            maybe_logical_viewport_rect_to_str(none),
+            maybe_logical_viewport_rect_to_str(some)
+        );
     }
 
     #[test]
     fn test_maybe_physical_viewport_rect_to_str() {
         let none = None;
-        let some = Some(URect::new(1, 2, 3, 4) );
-        assert_ne!(maybe_physical_viewport_rect_to_str(none), maybe_physical_viewport_rect_to_str(some));
+        let some = Some(URect::new(1, 2, 3, 4));
+        assert_ne!(
+            maybe_physical_viewport_rect_to_str(none),
+            maybe_physical_viewport_rect_to_str(some)
+        );
     }
-
-
 
     #[test]
     fn test_player_responds_to_key_press_up() {

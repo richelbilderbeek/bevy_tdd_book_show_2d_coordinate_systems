@@ -7,4 +7,3 @@ fn main() {
     app.add_plugins(DefaultPlugins);
     app.run();
 }
-
