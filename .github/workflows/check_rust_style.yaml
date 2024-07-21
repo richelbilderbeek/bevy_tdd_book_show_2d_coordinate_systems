@@ -20,5 +20,8 @@ jobs:
 
       - uses: actions/checkout@v4
 
+      - name: Install prerequisites, from https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md#ubuntu
+        run: sudo apt-get install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
+
       - name: Run Clippy
         run: cargo clippy --all-targets --all-features
