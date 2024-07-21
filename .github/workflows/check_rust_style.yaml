@@ -20,15 +20,5 @@ jobs:
 
       - uses: actions/checkout@v4
 
-      #- uses: actions-rs/toolchain@v1
-      #  with:
-      #    toolchain: stable
-
-      - name: Install ALSA, adapted from https://stackoverflow.com/a/57728808
-        run: sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0
-
-      - name: Install udev, from https://stackoverflow.com/a/74529205
-        run: sudo apt-get install -y  libudev-dev
-
       - name: Run Clippy
         run: cargo clippy --all-targets --all-features

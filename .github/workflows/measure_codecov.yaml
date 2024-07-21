@@ -23,12 +23,6 @@ jobs:
       - name: Install cargo-llvm-cov
         uses: taiki-e/install-action@cargo-llvm-cov
 
-      - name: Install ALSA, adapted from https://stackoverflow.com/a/57728808
-        run: sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0
-
-      - name: Install udev, from https://stackoverflow.com/a/74529205
-        run: sudo apt-get install -y  libudev-dev
-
 
       - name: Generate code coverage
         run: cargo llvm-cov --all-features --workspace --lcov --output-path lcov.info

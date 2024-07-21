@@ -18,19 +18,12 @@ jobs:
         with:
           toolchain: stable
 
-      - name: Install ALSA, adapted from https://stackoverflow.com/a/57728808
-        run: sudo apt-get install -y libasound2-dev libwebkit2gtk-4.0
-
-      - name: Install udev, from https://stackoverflow.com/a/74529205
-        run: sudo apt-get install -y  libudev-dev
+      - name: Install prerequisites, from https://github.com/bevyengine/bevy/blob/main/docs/linux_dependencies.md#ubuntu
+        run: sudo apt-get install g++ pkg-config libx11-dev libasound2-dev libudev-dev libxkbcommon-x11-0
 
       - uses: actions-rs/cargo@v1
         with:
           command: check
           args: --release --all-features
 
-      #- uses: actions-rs/cargo@v1
-      #  with:
-      #    command: build
-      #    args: --release --all-features
 
