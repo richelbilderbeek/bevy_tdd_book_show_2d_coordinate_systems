@@ -123,7 +123,7 @@ fn ucoordinate_to_str(coordinat: UVec2) -> String {
 #[cfg(test)]
 fn count_n_camers(app: &mut App) -> usize {
     let mut query = app.world_mut().query::<&Camera>();
-    return query.iter(app.world_mut()).len();
+    return query.iter(app.world()).len();
 }
 
 #[cfg(test)]
