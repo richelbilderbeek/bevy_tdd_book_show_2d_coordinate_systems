@@ -20,6 +20,11 @@ pub fn create_app() -> App {
 
     // Only add this plugin in testing.
     // The main app will assume it to be absent
+    //
+    // The function 'try_add_plugins' 
+    // (https://github.com/bevyengine/bevy/discussions/15802#discussioncomment-10898148)
+    // will make this if obsolete and increase code coverage.
+    // Thanks mgi388 for pointing this out
     if cfg!(test) {
         app.add_plugins(bevy::input::InputPlugin);
         app.add_plugins(bevy::prelude::WindowPlugin::default());
