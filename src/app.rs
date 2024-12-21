@@ -65,7 +65,7 @@ fn add_player(mut commands: Commands) {
 
 fn add_text(mut commands: Commands) {
     commands.spawn((
-        Text2dBundle {
+        Text2d {
             text: Text::from_section(
                 String::new(),
                 TextStyle {
@@ -82,7 +82,7 @@ fn add_text(mut commands: Commands) {
         CursorText,
     ));
     commands.spawn((
-        Text2dBundle {
+        Text2d {
             text: Text::from_section(
                 String::new(),
                 TextStyle {
@@ -99,7 +99,7 @@ fn add_text(mut commands: Commands) {
         ResizeText,
     ));
     commands.spawn((
-        Text2dBundle {
+        Text2d {
             text: Text::from_section(
                 String::new(),
                 TextStyle {
