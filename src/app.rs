@@ -52,11 +52,9 @@ fn add_camera(mut commands: Commands) {
 
 fn add_player(mut commands: Commands) {
     commands.spawn((
-        Sprite {
-            transform: Transform {
-                scale: Vec3::new(64.0, 32.0, 1.0),
-                ..default()
-            },
+        Sprite::default(),
+        Transform {
+            scale: Vec3::new(64.0, 32.0, 1.0),
             ..default()
         },
         Player,
@@ -65,52 +63,34 @@ fn add_player(mut commands: Commands) {
 
 fn add_text(mut commands: Commands) {
     commands.spawn((
-        Text2d {
-            text: Text::from_section(
-                String::new(),
-                TextStyle {
-                    color: Color::srgb(1.0, 0.0, 0.0),
-                    ..default()
-                },
-            ),
-            transform: Transform {
-                translation: Vec3::new(-100.0, 300.0, 0.0),
-                ..default()
-            },
+        Text2d::new(""),
+        TextColor {
+            Color::srgb(1.0, 0.0, 0.0),
+        },
+        Transform {
+            translation: Vec3::new(-100.0, 300.0, 0.0),
             ..default()
         },
         CursorText,
     ));
     commands.spawn((
-        Text2d {
-            text: Text::from_section(
-                String::new(),
-                TextStyle {
-                    color: Color::srgb(0.0, 1.0, 0.0),
-                    ..default()
-                },
-            ),
-            transform: Transform {
-                translation: Vec3::new(-50.0, 100.0, 0.0),
-                ..default()
-            },
+        Text2d::new(""),
+        TextColor {
+            color: Color::srgb(0.0, 1.0, 0.0),
+        },
+        Transform {
+            translation: Vec3::new(-50.0, 100.0, 0.0),
             ..default()
         },
         ResizeText,
     ));
     commands.spawn((
-        Text2d {
-            text: Text::from_section(
-                String::new(),
-                TextStyle {
-                    color: Color::srgb(0.0, 0.0, 1.0),
-                    ..default()
-                },
-            ),
-            transform: Transform {
-                translation: Vec3::new(-0.0, -100.0, 0.0),
-                ..default()
-            },
+        Text2d::new(""),
+        TextColor {
+            Color::srgb(0.0, 0.0, 1.0),
+        },
+        Transform {
+            translation: Vec3::new(-0.0, -100.0, 0.0),
             ..default()
         },
         IsInText,
@@ -277,7 +257,7 @@ fn show_mouse_and_player_position(
     let player_pos = player_query.single().0.translation.xy();
     let line_player_pos: String = format!("player_pos: {}, {}", player_pos.x, player_pos.y);
 
-    text.sections[0].value = format!(
+    text.0 = format!(
         "{}\n{}\n{}",
         line_cursor_pos, line_cursor_world_pos, line_player_pos
     );
@@ -291,7 +271,7 @@ fn show_is_in(
     let (mut text, _, _) = text_query.single_mut();
     let (_, projection) = camera_query.single();
     let player_pos = player_query.single().0.translation.xy();
-    text.sections[0].value = format!(
+    text.0 = format!(
         "is player visible: {}",
         is_position_visible_in_projection_area(player_pos, projection)
     );
@@ -307,7 +287,7 @@ fn show_sizes(
     let maybe_physical_viewport_rect = camera.physical_viewport_rect();
     let projection_area = projection.area;
     let line_area = format!("projection_area: {}", rect_to_str(projection_area));
-    text.sections[0].value = format!(
+    text.0 = format!(
         "{}\n{}\n{}",
         maybe_logical_viewport_rect_to_str(maybe_logical_viewport_rect),
         maybe_physical_viewport_rect_to_str(maybe_physical_viewport_rect),
