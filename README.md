@@ -2,7 +2,7 @@
 
 [![Check build](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_build.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_build.yaml)
 [![Check links](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_links.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_links.yaml)
-[![Check markdown](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_markdown.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_markdown.yaml)
+[![Check Markdown](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_markdown.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_markdown.yaml)
 [![Check Rust style](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_rust_style.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_rust_style.yaml)
 [![Check spelling](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_spelling.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/check_spelling.yaml)
 [![Measure code coverage](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/measure_codecov.yaml/badge.svg?branch=master)](https://github.com/richelbilderbeek/bevy_tdd_book_show_2d_coordinate_systems/actions/workflows/measure_codecov.yaml)
@@ -47,11 +47,11 @@ rustflags = ["-C", "link-arg=-fuse-ld=lld"]
 
 Filename                                  |Descriptions
 ------------------------------------------|--------------------------------------------------------------------------------------------------------------------------------------
-[mlc_config.json](mlc_config.json)        |Configuration of the link checker, use `markdown-link-check --config mlc_config.json --quiet docs/**/*.md` to do link checking locally
-[.spellcheck.yml](.spellcheck.yml)        |Configuration of the spell checker, use `pyspelling -c .spellcheck.yml` to do spellcheck locally
-[.wordlist.txt](.wordlist.txt)            |Whitelisted words for the spell checker, use `pyspelling -c .spellcheck.yml` to do spellcheck locally
-[.markdownlint.jsonc](.markdownlint.jsonc)|Configuration of the markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
-[.markdownlintignore](.markdownlintignore)|Files ignored by the markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
+[`mlc_config.json`](mlc_config.json)        |Configuration of the link checker, use `markdown-link-check --config mlc_config.json --quiet docs/**/*.md` to do link checking locally
+[`.spellcheck.yml`](.spellcheck.yml)        |Configuration of the spell checker, use `pyspelling -c .spellcheck.yml` to do spellcheck locally
+[`.wordlist.txt`](.wordlist.txt)            |Whitelisted words for the spell checker, use `pyspelling -c .spellcheck.yml` to do spellcheck locally
+[`.markdownlint.jsonc`](.markdownlint.jsonc)|Configuration of the Markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
+[`.markdownlintignore`](.markdownlintignore)|Files ignored by the Markdown linter, use `markdownlint "**/*.md"` to do markdown linting locally. The name of this file is a default name.
 
 ## References
 
